@@ -1,0 +1,12 @@
+---
+- hosts: remotes
+  become: true
+  tasks:
+
+  - name: uninstall apache and php for Ubuntu servers
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: absent
+      update_cache: yes
