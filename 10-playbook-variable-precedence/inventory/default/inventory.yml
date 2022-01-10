@@ -1,0 +1,13 @@
+all:
+  vars:
+    location: 3.1. inventory file group vars all
+
+remotes:
+  vars:
+    location: 3.2. inventory file group vars
+  hosts:
+    managedvm:
+      location: 8. inventory file host_vars
+      ansible_user: vagrant
+      ansible_port: 22
+      ansible_ssh_private_key_file: /home/vagrant/.ssh/id_rsa
