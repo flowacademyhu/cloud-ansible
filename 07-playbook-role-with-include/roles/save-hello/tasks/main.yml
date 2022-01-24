@@ -1,6 +1,6 @@
 - name: Test file handling in a custom directory
   vars:
-    path: '{{ ansible_env.HOME }}/custom/path'
+    path: '{{ ansible_env.HOME }}/flow/testfolder'
   block:
 
     - name: Include create-file.yml
