@@ -1,0 +1,24 @@
+---
+- hosts: all
+
+  # vars:
+  #   my_color_choise: '#0ff'
+
+  vars_prompt:
+    - name: my_color_choise
+      prompt: Kerem a szint
+      unsafe: no
+      private: no
+
+  tasks:
+    # - name: "Verify {{ my_color_choise }} is a form blue"
+    #   assert:
+    #     that: > 
+    #       my_color_choise == 'blue'
+    #       or my_color_choise == '#0000ff'
+    #       or my_color_choise == '#00f'
+    
+    - name: "Verify {{ my_color_choise }} is a form blue whit plugin"
+      assert:
+        that: my_color_choise is blue
+
