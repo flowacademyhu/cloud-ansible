@@ -20,5 +20,5 @@
     
     - name: "Verify {{ my_color_choise }} is a form blue whit plugin"
       assert:
-        that: my_color_choise is blue
+        that: my_color_choise is local.colors.blue
 
