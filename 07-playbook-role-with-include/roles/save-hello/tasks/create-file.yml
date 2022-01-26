@@ -5,5 +5,6 @@
 
 - name: Create custom file
   copy:
-    dest: '{{ path }}/hello.txt'
-    content: 'Welcome'
+    dest: '{{ path }}/hello-{{ item }}.txt'
+    content: 'Welcome {{ item }} '
+  loop: ["alma", "korte", "barack"]
