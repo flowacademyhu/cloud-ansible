@@ -1,5 +1,5 @@
 ---
-- hosts: web
+- hosts: 192.168.56.17
   become: true
 
   vars_files:
