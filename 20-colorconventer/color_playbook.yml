@@ -50,7 +50,7 @@
         mode: 'u+x,g+x'
 
     - name: Git checkout
-      ansible.builtin.git:
+      git:
         repo: 'https://github.com/ttsz/ColorConverterApp.git'
         dest: /home/vagrant/colorconvert
 
