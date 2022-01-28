@@ -18,7 +18,7 @@
       apt:
         name: pip 
         state: present
-
+  
     - name: Install docker python package
       pip:
         name: docker
@@ -36,7 +36,7 @@
     - name: Echo output
       debug:
         msg: '{{ myoutput.stdout_lines}}'
-    
+
     - name: Add vagrant user to the docker group
       ansible.builtin.user:
         name: vagrant
