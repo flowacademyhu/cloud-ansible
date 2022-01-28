@@ -1,5 +1,5 @@
 ---
-- hosts: managedvm
+- hosts: all
   become: true
   tasks:
     - name: Get OS type
