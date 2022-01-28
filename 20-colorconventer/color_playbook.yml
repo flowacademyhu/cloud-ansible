@@ -13,12 +13,35 @@
     - name: uptdate cache
       apt:
         update_cache: yes
+    
+    - name: Install python pip
+      apt:
+        name: pip 
+        state: present
 
-    # - name: install latest docker-compose
-    #   shell: |
-    #     - "curl -L 'https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)' -o /usr/local/bin/docker-compose"
-    #     - "chmod +x /usr/local/bin/docker-compose"
-    #     - "ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose"
+    - name: Install docker python package
+      pip:
+        name: docker
+
+    - name: Download docker script
+      get_url:
+        url : "https://get.docker.com"
+        dest:  /home/vagrant/get-docker.sh
+        mode: 'u+x,g+x'
+    
+    - name: Install docker
+      command: /home/vagrant/get-docker.sh
+      register: myoutput
+
+    - name: Echo output
+      debug:
+        msg: '{{ myoutput.stdout_lines}}'
+    
+    - name: Add vagrant user to the docker group
+      ansible.builtin.user:
+        name: vagrant
+        groups: docker
+        append: yes
 
     - name: Install docker-compose from official github repo
       get_url:
@@ -31,65 +54,16 @@
         repo: 'https://github.com/ttsz/ColorConverterApp.git'
         dest: /home/vagrant/colorconvert
 
-    # - name: Build an image and push it to a private repo
-    #   community.docker.docker_image:
-    #     build:
-    #       path: /home/vagrant/colorconvert/ColorConverterApp
-    #     name: ColorConverterApp
-    #     source: build
-    
-    # - name: Build image and with build args
-    #   community.docker.docker_image:
-    #     name: colorconverter
-    #     build:
-    #       path: /home/vagrant/colorconvert/ColorConverterApp
-    #       args:
-    #         log_volume: /var/log/colorconverterapp
-    #         listen_port: "3000:3000"
-    #       tag: version-2.0
-    #     source: build
-
     - name: Build an image
-      community.docker.docker_image:
-        build:
-          path: /home/vagrant/colorconvert/ColorConverterApp
+      docker_image:
+        path: /home/vagrant/colorconvert
         name: colorconverter
         tag: version-2.0
-        source: build
 
-    - name: Start a container
-      community.docker.docker_container:
+    - name: Create a data container
+      docker_container:
         name: colorconverter
         image: colorconverter:version-2.0
-        state: started
-        # links:
-        # - "myredis:aliasedredis"
-        # devices:
-        # - "/dev/sda:/dev/xvda:rwm"
-        ports:
-        # Publish container port 9000 as host port 8080
-        - "3000:3000"
-        # Publish container UDP port 9001 as host port 8081 on interface 127.0.0.1
-        # - "127.0.0.1:8081:9001/udp"
-        # # Publish container port 9002 as a random host port
-        # - "9002"
-        # # Publish container port 9003 as a free host port in range 8000-8100
-        # # (the host port will be selected by the Docker daemon)
-        # - "8000-8100:9003"
-        # # Publish container ports 9010-9020 to host ports 7000-7010
-        # - "7000-7010:9010-9020"
-        # env:
-        #     SECRET_KEY: "ssssh"
-        #     # Values which might be parsed as numbers, booleans or other types by the YAML parser need to be quoted
-        #     BOOLEAN_KEY: "yes"
-
-    # - shell: 'docker run'
-    # - shell: 'cd /home/vagrant/colorconvert/ColorConverterApp; docker-compose up -d'
-
-    # - name: Create and start services
-    #   community.docker.docker_compose:
-    #     project_src: /home/vagrant/colorconvert/ColorConverterApp
-    #   register: output
-
-      # ansible.builtin.debug:
-      #   var: output
+        env: PORT=3000
+        published_ports:
+          - 3000:3000
