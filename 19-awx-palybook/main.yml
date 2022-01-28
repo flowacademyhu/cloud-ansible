@@ -1,0 +1,14 @@
+---
+- hosts: all
+
+  vars_prompt:
+    - name: awx_variable
+      prompt: AWX
+      unsafe: no
+      private: no
+
+  tasks:
+    - name: Debug variable 
+      debug:
+        msg: '{{ awx_variable }}'
+      when: awx_variable|length > 0  
