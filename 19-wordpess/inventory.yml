@@ -1,0 +1,24 @@
+all:
+  children:
+    linux:
+      children:
+        ubuntu:
+          hosts:
+            managedvm:
+              ansible_user: vagrant
+              ansible_port: 22
+              ansible_ssh_private_key_file: /home/vagrant/.ssh/id_rsa
+            db:
+              ansible_user: vagrant
+              ansible_port: 22
+              ansible_ssh_private_key_file: /home/vagrant/.ssh/id_rsa
+            web:
+              ansible_user: vagrant
+              ansible_port: 22
+              ansible_ssh_private_key_file: /home/vagrant/.ssh/id_rsa
+        centoses:
+          hosts:
+            centos:
+              ansible_port: 22
+              ansible_ssh_private_key_file: /home/vagrant/.ssh/id_rsa
+    ungrouped: {}

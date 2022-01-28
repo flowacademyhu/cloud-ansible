@@ -1,0 +1,11 @@
+---
+- name: Prepare the servers
+  import_tasks: common.yml
+
+- name: Install and config wordpress
+  import_tasks: db.yml
+  when: "'db' in inventory_hostname"
+
+- name: Install and set up Apache
+  import_tasks: web.yml
+  when: "'web' in inventory_hostname"
