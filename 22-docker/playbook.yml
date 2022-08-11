@@ -1,0 +1,55 @@
+---
+- hosts: db, web
+  become: true
+
+  tasks:
+    - name: Install required system packages
+      apt:
+        name:
+          - aptitude
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: yes
+
+    - name: Add GPG apt key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+
+    - name: Install docker package
+      apt: 
+        name: 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: latest
+        update_cache: yes
+
+    - name: Install Docker python module
+      pip:
+        name: docker
+        state: present
+    
+    - name: Pull ubuntu image from dockerhub
+      community.docker.docker_image: 
+        name: ubuntu
+        source: pull
+        
+    - name: Create ubuntu containers
+      community.docker.docker_container:
+        name: ubuntu
+        state: present
+        image: ubuntu
+        command: sleep infinity
