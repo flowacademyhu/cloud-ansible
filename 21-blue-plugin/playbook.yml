@@ -1,0 +1,8 @@
+---
+- hosts: web
+  vars:
+    my_color_choise: yellow
+  tasks:   
+    - name: "Verify {{ my_color_choise }} is a form blue whit plugin"
+      assert:
+        that: my_color_choise is blue
