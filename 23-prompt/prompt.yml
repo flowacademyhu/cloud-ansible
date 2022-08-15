@@ -1,0 +1,21 @@
+---
+- name: prompt_pelda
+  hosts: all
+
+  vars_prompt:
+    - name: username
+      prompt: What is your username?
+      private: no
+      default: "jozsi"
+
+    - name: password
+      prompt: What is your password?
+
+  tasks:
+    - name: print the given username
+      debug:
+        msg: "Using user {{ username }}"
+
+    - name: print the given password
+      debug:
+        msg: "The secret was {{ password }}"
